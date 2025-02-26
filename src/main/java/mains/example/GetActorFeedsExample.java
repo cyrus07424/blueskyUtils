@@ -7,18 +7,18 @@ import java.util.Scanner;
 import org.apache.commons.io.FileUtils;
 
 import bsky4j.BlueskyFactory;
-import bsky4j.api.entity.bsky.feed.FeedPostRequest;
-import bsky4j.api.entity.bsky.feed.FeedPostResponse;
+import bsky4j.api.entity.bsky.feed.FeedGetActorFeedsRequest;
+import bsky4j.api.entity.bsky.feed.FeedGetActorFeedsResponse;
 import bsky4j.api.entity.share.Response;
 import bsky4j.domain.Service;
 import constants.Configurations;
 
 /**
- * 投稿テスト.
+ * GetActorFeedsテスト.
  *
  * @author cyrus
  */
-public class SendFeedExample {
+public class GetActorFeedsExample {
 
 	/**
 	 * メイン.
@@ -34,18 +34,22 @@ public class SendFeedExample {
 
 		// Scanner
 		try (Scanner scanner = new Scanner(System.in)) {
-			// 投稿内容を取得
-			System.out.print("投稿内容を入力してください: ");
-			String text = scanner.nextLine();
+			// actorを取得
+			System.out.print("actorを入力してください: ");
+			String actor = scanner.nextLine();
 
 			// レスポンスを取得
-			Response<FeedPostResponse> response = BlueskyFactory
+			Response<FeedGetActorFeedsResponse> feeds = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
-					.feed().post(
-							FeedPostRequest.builder()
+					.feed().getActorFeeds(
+							FeedGetActorFeedsRequest.builder()
 									.accessJwt(accessJwt)
-									.text(text)
+									.actor(actor)
 									.build());
+
+			feeds.get().getFeeds().forEach(i -> {
+				System.out.println(i.getDisplayName());
+			});
 		} finally {
 			System.out.println("■done.");
 		}

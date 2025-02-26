@@ -10,7 +10,12 @@ import java.io.File;
 public interface Configurations {
 
 	/**
-	 * セッションファイルの出力先.
+	 * アクセストークンの出力先.
 	 */
 	File ACCESS_JWT_PATH = new File("data/accessJwt.txt");
+
+	/**
+	 * リフレッシュトークンの出力先.
+	 */
+	File REFRESH_JWT_PATH = new File("data/refreshJwt.txt");
 }
