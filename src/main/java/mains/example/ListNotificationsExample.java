@@ -12,8 +12,8 @@ import bsky4j.api.entity.bsky.notification.NotificationListNotificationsResponse
 import bsky4j.api.entity.share.Response;
 import bsky4j.domain.Service;
 import bsky4j.model.bsky.feed.FeedPost;
-import bsky4j.model.share.RecordUnion;
 import constants.Configurations;
+import utils.DumpHelper;
 
 /**
  * ListNotificationsテスト.
@@ -46,7 +46,7 @@ public class ListNotificationsExample {
 			response.get().getNotifications().forEach(it -> {
 				System.out.println("|NOTIFICATION|-----------------------------------------");
 				System.out.println("REASON> " + it.getReason());
-				print(it.getRecord());
+				DumpHelper.print(it.getRecord());
 
 				// リプライの場合
 				if (StringUtils.equals(it.getReason(), "mention")) {
@@ -66,14 +66,5 @@ public class ListNotificationsExample {
 		} finally {
 			System.out.println("■done.");
 		}
-	}
-
-	/**
-	 * RecordUnionを出力.
-	 * 
-	 * @param post
-	 */
-	private static void print(RecordUnion record) {
-		System.out.println("TYPE> " + record.getType());
 	}
 }

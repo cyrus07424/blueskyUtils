@@ -2,23 +2,23 @@ package mains.example;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 
 import bsky4j.BlueskyFactory;
-import bsky4j.api.entity.bsky.feed.FeedPostRequest;
-import bsky4j.api.entity.bsky.feed.FeedPostResponse;
+import bsky4j.api.entity.bsky.feed.FeedGetTimelineRequest;
+import bsky4j.api.entity.bsky.feed.FeedGetTimelineResponse;
 import bsky4j.api.entity.share.Response;
 import bsky4j.domain.Service;
 import constants.Configurations;
+import utils.DumpHelper;
 
 /**
- * 投稿テスト.
+ * タイムライン取得テスト.
  *
  * @author cyrus
  */
-public class SendFeedExample {
+public class GetTimelineExample {
 
 	/**
 	 * メイン.
@@ -32,20 +32,19 @@ public class SendFeedExample {
 		// アクセストークンをファイルから読み込み
 		String accessJwt = FileUtils.readFileToString(Configurations.ACCESS_JWT_PATH, StandardCharsets.UTF_8);
 
-		// Scanner
-		try (Scanner scanner = new Scanner(System.in)) {
-			// 投稿内容を取得
-			System.out.print("投稿内容を入力してください: ");
-			String text = scanner.nextLine();
-
+		try {
 			// レスポンスを取得
-			Response<FeedPostResponse> response = BlueskyFactory
+			Response<FeedGetTimelineResponse> response = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
-					.feed().post(
-							FeedPostRequest.builder()
+					.feed().getTimeline(
+							FeedGetTimelineRequest.builder()
 									.accessJwt(accessJwt)
-									.text(text)
+									.limit(10)
 									.build());
+
+			response.get().getFeed().forEach(f -> {
+				DumpHelper.print(f.getPost());
+			});
 		} finally {
 			System.out.println("■done.");
 		}
