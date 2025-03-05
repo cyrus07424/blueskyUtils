@@ -35,6 +35,7 @@ public class ListNotificationsExample {
 		String accessJwt = FileUtils.readFileToString(Configurations.ACCESS_JWT_PATH, StandardCharsets.UTF_8);
 
 		try {
+			// レスポンスを取得
 			Response<NotificationListNotificationsResponse> response = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
 					.notification()

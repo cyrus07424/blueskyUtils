@@ -7,19 +7,19 @@ import java.util.Scanner;
 import org.apache.commons.io.FileUtils;
 
 import bsky4j.BlueskyFactory;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedRequest;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedResponse;
+import bsky4j.api.entity.bsky.feed.FeedSearchPostsRequest;
+import bsky4j.api.entity.bsky.feed.FeedSearchPostsResponse;
 import bsky4j.api.entity.share.Response;
 import bsky4j.domain.Service;
 import constants.Configurations;
 import utils.DumpHelper;
 
 /**
- * GetAuthorFeedテスト.
+ * 投稿を検索テスト.
  *
  * @author cyrus
  */
-public class GetAuthorFeedExample {
+public class SearchPostExample {
 
 	/**
 	 * メイン.
@@ -35,22 +35,20 @@ public class GetAuthorFeedExample {
 
 		// Scanner
 		try (Scanner scanner = new Scanner(System.in)) {
-			// actorを取得
-			System.out.print("actorを入力してください: ");
-			String actor = scanner.nextLine();
+			// 検索キーワードを取得
+			System.out.print("検索キーワードを入力してください: ");
+			String q = scanner.nextLine();
 
 			// レスポンスを取得
-			Response<FeedGetAuthorFeedResponse> response = BlueskyFactory
+			Response<FeedSearchPostsResponse> response = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
-					.feed().getAuthorFeed(
-							FeedGetAuthorFeedRequest.builder()
+					.feed().searchPosts(
+							FeedSearchPostsRequest.builder()
 									.accessJwt(accessJwt)
-									.actor(actor)
+									.q(q)
 									.build());
 
-			response.get().getFeed().forEach(f -> {
-				DumpHelper.print(f.getPost());
-			});
+			response.get().getPosts().forEach(DumpHelper::print);
 		} finally {
 			System.out.println("■done.");
 		}

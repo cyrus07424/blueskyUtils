@@ -29,8 +29,10 @@ public class PlcDirectoryExample {
 			System.out.print("didを入力してください: ");
 			String did = scanner.nextLine();
 
+			// レスポンスを取得
 			Response<DIDDetails> response = PLCDirectoryFactory
 					.getInstance().getDIDDetails(did);
+
 			System.out.println(response.get().getAlsoKnownAs().get(0));
 		} finally {
 			System.out.println("■done.");

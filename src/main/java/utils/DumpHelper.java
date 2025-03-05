@@ -1,5 +1,7 @@
 package utils;
 
+import bsky4j.model.bsky.actor.ActorDefsProfileView;
+import bsky4j.model.bsky.actor.ActorDefsProfileViewDetailed;
 import bsky4j.model.bsky.embed.EmbedImagesView;
 import bsky4j.model.bsky.embed.EmbedViewUnion;
 import bsky4j.model.bsky.feed.FeedDefsPostView;
@@ -46,5 +48,31 @@ public class DumpHelper {
 	 */
 	public static void print(RecordUnion record) {
 		System.out.println("TYPE> " + record.getType());
+	}
+
+	/**
+	 * ActorDefsProfileViewを出力.
+	 * 
+	 * @param post
+	 */
+	public static void print(ActorDefsProfileView user) {
+		System.out.println("|USER|-----------------------------------------");
+		System.out.println("DID> " + user.getDid());
+		System.out.println("HANDLE> " + user.getHandle());
+		System.out.println("NAME> " + user.getDisplayName());
+	}
+
+	/**
+	 * ActorDefsProfileViewDetailedを出力.
+	 * 
+	 * @param post
+	 */
+	public static void print(ActorDefsProfileViewDetailed user) {
+		System.out.println("|USER|-----------------------------------------");
+		System.out.println("DID> " + user.getDid());
+		System.out.println("HANDLE> " + user.getHandle());
+		System.out.println("NAME> " + user.getDisplayName());
+		System.out.println("FOLLOWS COUNT> " + user.getFollowsCount());
+		System.out.println("FOLLOWERS COUNT> " + user.getFollowersCount());
 	}
 }

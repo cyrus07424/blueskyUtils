@@ -39,7 +39,7 @@ public class GetActorFeedsExample {
 			String actor = scanner.nextLine();
 
 			// レスポンスを取得
-			Response<FeedGetActorFeedsResponse> feeds = BlueskyFactory
+			Response<FeedGetActorFeedsResponse> response = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
 					.feed().getActorFeeds(
 							FeedGetActorFeedsRequest.builder()
@@ -47,7 +47,7 @@ public class GetActorFeedsExample {
 									.actor(actor)
 									.build());
 
-			feeds.get().getFeeds().forEach(i -> {
+			response.get().getFeeds().forEach(i -> {
 				System.out.println(i.getDisplayName());
 			});
 		} finally {

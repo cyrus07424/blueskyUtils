@@ -7,19 +7,19 @@ import java.util.Scanner;
 import org.apache.commons.io.FileUtils;
 
 import bsky4j.BlueskyFactory;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedRequest;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedResponse;
+import bsky4j.api.entity.bsky.actor.ActorGetProfileRequest;
+import bsky4j.api.entity.bsky.actor.ActorGetProfileResponse;
 import bsky4j.api.entity.share.Response;
 import bsky4j.domain.Service;
 import constants.Configurations;
 import utils.DumpHelper;
 
 /**
- * GetAuthorFeedテスト.
+ * プロフィール取得テスト.
  *
  * @author cyrus
  */
-public class GetAuthorFeedExample {
+public class GetProfileExample {
 
 	/**
 	 * メイン.
@@ -40,17 +40,15 @@ public class GetAuthorFeedExample {
 			String actor = scanner.nextLine();
 
 			// レスポンスを取得
-			Response<FeedGetAuthorFeedResponse> response = BlueskyFactory
+			Response<ActorGetProfileResponse> response = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
-					.feed().getAuthorFeed(
-							FeedGetAuthorFeedRequest.builder()
+					.actor().getProfile(
+							ActorGetProfileRequest.builder()
 									.accessJwt(accessJwt)
 									.actor(actor)
 									.build());
 
-			response.get().getFeed().forEach(f -> {
-				DumpHelper.print(f.getPost());
-			});
+			DumpHelper.print(response.get());
 		} finally {
 			System.out.println("■done.");
 		}

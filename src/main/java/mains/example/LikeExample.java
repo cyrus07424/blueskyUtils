@@ -7,19 +7,19 @@ import java.util.Scanner;
 import org.apache.commons.io.FileUtils;
 
 import bsky4j.BlueskyFactory;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedRequest;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedResponse;
+import bsky4j.api.entity.bsky.feed.FeedLikeRequest;
+import bsky4j.api.entity.bsky.feed.FeedLikeResponse;
 import bsky4j.api.entity.share.Response;
 import bsky4j.domain.Service;
+import bsky4j.model.atproto.repo.RepoStrongRef;
 import constants.Configurations;
-import utils.DumpHelper;
 
 /**
- * GetAuthorFeedテスト.
+ * いいねテスト.
  *
  * @author cyrus
  */
-public class GetAuthorFeedExample {
+public class LikeExample {
 
 	/**
 	 * メイン.
@@ -35,22 +35,24 @@ public class GetAuthorFeedExample {
 
 		// Scanner
 		try (Scanner scanner = new Scanner(System.in)) {
-			// actorを取得
-			System.out.print("actorを入力してください: ");
-			String actor = scanner.nextLine();
+			// uriを取得
+			System.out.print("uriを入力してください: ");
+			String uri = scanner.nextLine();
+
+			// cidを取得
+			System.out.print("cidを入力してください: ");
+			String cid = scanner.nextLine();
+
+			RepoStrongRef ref = new RepoStrongRef(uri, cid);
 
 			// レスポンスを取得
-			Response<FeedGetAuthorFeedResponse> response = BlueskyFactory
+			Response<FeedLikeResponse> response = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
-					.feed().getAuthorFeed(
-							FeedGetAuthorFeedRequest.builder()
+					.feed().like(
+							FeedLikeRequest.builder()
 									.accessJwt(accessJwt)
-									.actor(actor)
+									.subject(ref)
 									.build());
-
-			response.get().getFeed().forEach(f -> {
-				DumpHelper.print(f.getPost());
-			});
 		} finally {
 			System.out.println("■done.");
 		}

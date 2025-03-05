@@ -2,24 +2,23 @@ package mains.example;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 
 import bsky4j.BlueskyFactory;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedRequest;
-import bsky4j.api.entity.bsky.feed.FeedGetAuthorFeedResponse;
+import bsky4j.api.entity.bsky.actor.ActorGetPreferencesRequest;
+import bsky4j.api.entity.bsky.actor.ActorGetPreferencesResponse;
 import bsky4j.api.entity.share.Response;
 import bsky4j.domain.Service;
+import bsky4j.model.bsky.actor.ActorDefsSavedFeedsPref;
 import constants.Configurations;
-import utils.DumpHelper;
 
 /**
- * GetAuthorFeedテスト.
+ * 設定取得テスト.
  *
  * @author cyrus
  */
-public class GetAuthorFeedExample {
+public class GetPreferencesExample {
 
 	/**
 	 * メイン.
@@ -33,23 +32,20 @@ public class GetAuthorFeedExample {
 		// アクセストークンをファイルから読み込み
 		String accessJwt = FileUtils.readFileToString(Configurations.ACCESS_JWT_PATH, StandardCharsets.UTF_8);
 
-		// Scanner
-		try (Scanner scanner = new Scanner(System.in)) {
-			// actorを取得
-			System.out.print("actorを入力してください: ");
-			String actor = scanner.nextLine();
-
+		try {
 			// レスポンスを取得
-			Response<FeedGetAuthorFeedResponse> response = BlueskyFactory
+			Response<ActorGetPreferencesResponse> response = BlueskyFactory
 					.getInstance(Service.BSKY_SOCIAL.getUri())
-					.feed().getAuthorFeed(
-							FeedGetAuthorFeedRequest.builder()
+					.actor().getPreferences(
+							ActorGetPreferencesRequest.builder()
 									.accessJwt(accessJwt)
-									.actor(actor)
 									.build());
 
-			response.get().getFeed().forEach(f -> {
-				DumpHelper.print(f.getPost());
+			response.get().getPreferences().forEach(s -> {
+				if (s instanceof ActorDefsSavedFeedsPref) {
+					((ActorDefsSavedFeedsPref) s).getSaved()
+							.forEach(System.out::println);
+				}
 			});
 		} finally {
 			System.out.println("■done.");
