@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.*;
 
 import bsky4j.BlueskyFactory;
 import bsky4j.api.entity.bsky.notification.NotificationListNotificationsRequest;
@@ -50,12 +50,12 @@ public class ListNotificationsExample {
 				DumpHelper.print(it.getRecord());
 
 				// リプライの場合
-				if (StringUtils.equals(it.getReason(), "mention")) {
+				if (Strings.CS.equals(it.getReason(), "mention")) {
 					// リプライ元のユーザー名を取得
 					String handle = it.getAuthor().getHandle();
 					System.out.println("HANDLE> " + handle);
 
-					if (StringUtils.equals(it.getRecord().getType(), "app.bsky.feed.post")) {
+					if (Strings.CS.equals(it.getRecord().getType(), "app.bsky.feed.post")) {
 						FeedPost feedPost = (FeedPost) it.getRecord();
 
 						// テキストを取得

@@ -32,7 +32,7 @@ public class CreateSessionExample {
 		// Scanner
 		try (Scanner scanner = new Scanner(System.in)) {
 			// ユーザー名を取得
-			System.out.print("ユーザー名を入力してください: ");
+			System.out.print("ユーザー名を入力してください(例: example.bsky.social): ");
 			String identifier = scanner.nextLine();
 
 			// パスワードを取得

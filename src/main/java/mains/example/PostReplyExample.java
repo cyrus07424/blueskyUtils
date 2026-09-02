@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.*;
 
 import bsky4j.BlueskyFactory;
 import bsky4j.api.entity.bsky.feed.FeedPostRequest;
@@ -49,12 +49,12 @@ public class PostReplyExample {
 
 			response1.get().getNotifications().forEach(notification -> {
 				// リプライの場合
-				if (StringUtils.equals(notification.getReason(), "mention")) {
+				if (Strings.CS.equals(notification.getReason(), "mention")) {
 					// リプライ元のユーザー名を取得
 					String handle = notification.getAuthor().getHandle();
 					System.out.println("HANDLE> " + handle);
 
-					if (StringUtils.equals(notification.getRecord().getType(), "app.bsky.feed.post")) {
+					if (Strings.CS.equals(notification.getRecord().getType(), "app.bsky.feed.post")) {
 						FeedPost feedPost = (FeedPost) notification.getRecord();
 
 						// テキストを取得
